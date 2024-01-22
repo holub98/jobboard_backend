@@ -7,10 +7,10 @@ import verifyToken from "../middleware/auth";
 const router = express.Router();
 
 router.get("/me", verifyToken, async (req: Request, res: Response) => {
-  const userId = req.userId;
+  const companyId = req.companyId;
 
   try {
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(companyId).select("-password");
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -49,7 +49,7 @@ router.post(
       await user.save();
 
       const token = jwt.sign(
-        { userId: user.id },
+        { companyId: user.id },
         process.env.JWT_SECRET_KEY as string,
         {
           expiresIn: "1d",
