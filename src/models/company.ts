@@ -10,7 +10,7 @@ const localizationSchema = new mongoose.Schema<LocalizationType>({
   zipCode: { type: String, required: true, unique: true },
 });
 
-const userSchema = new mongoose.Schema({
+const companySchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
@@ -19,13 +19,13 @@ const userSchema = new mongoose.Schema({
   workingSince: { type: Date, required: true },
 });
 
-userSchema.pre("save", async function (next) {
+companySchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 8);
   }
   next();
 });
 
-const User = mongoose.model<CompanyType>("User", userSchema);
+const Company = mongoose.model<CompanyType>("Company", companySchema);
 
-export default User;
+export default Company;
