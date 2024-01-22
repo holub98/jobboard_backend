@@ -1,8 +1,6 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import { JobOfferType } from "../models/type";
 import JobOffer from "../models/jobOffer";
-
-const router = express.Router();
 
 export const createOffer = async (req: Request, res: Response) => {
   try {

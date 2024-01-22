@@ -25,3 +25,13 @@ export type JobOfferType = {
   requirements: string[];
   description: string;
 };
+
+export type CandidateType = {
+  _id: string;
+  offerId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  cv: string;
+};
