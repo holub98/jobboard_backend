@@ -15,3 +15,13 @@ export type CompanyType = {
   imageUrls: string[];
   workSince: Date;
 };
+
+export type JobOfferType = {
+  _id: string;
+  userId: string;
+  name: string;
+  earnings: string[];
+  remotly: string;
+  requirements: string[];
+  description: string;
+};
