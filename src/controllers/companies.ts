@@ -24,7 +24,7 @@ export const myCompany = async (req: Request, res: Response) => {
 };
 
 export const registerValidation = [
-  check("name", "Last Name is required").isString(),
+  check("name", "Name is required").isString(),
   check("email", "Email is required").isEmail(),
   check("password", "Password with 6 or more characters required").isLength({
     min: 6,
@@ -38,7 +38,7 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024,
   },
 });
-upload.array("imageFiles", 10);
+export const uploadImg = upload.array("imageFiles", 10);
 
 export const register = async (req: Request, res: Response) => {
   const errors = validationResult(req);
