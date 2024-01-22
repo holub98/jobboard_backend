@@ -9,7 +9,7 @@ router.post("/", verifyToken, async (req: Request, res: Response) => {
   try {
     const newJobOffer: JobOfferType = req.body;
 
-    newJobOffer.companyId = req.userId;
+    newJobOffer.companyId = req.companyId;
 
     const jobOffer = new JobOffer(newJobOffer);
     await jobOffer.save();
