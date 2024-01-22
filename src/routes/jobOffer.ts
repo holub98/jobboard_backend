@@ -2,29 +2,12 @@ import express, { Request, Response } from "express";
 import verifyToken from "../middleware/auth";
 import { JobOfferType } from "../models/type";
 import JobOffer from "../models/jobOffer";
+import { createOffer, getOffers } from "../controllers/jobOffer";
 
 const router = express.Router();
 
-router.post("/", verifyToken, async (req: Request, res: Response) => {
-  try {
-    const newJobOffer: JobOfferType = req.body;
+router.post("/", verifyToken, createOffer);
 
-    newJobOffer.companyId = req.companyId;
+router.get("/", getOffers);
 
-    const jobOffer = new JobOffer(newJobOffer);
-    await jobOffer.save();
-    res.status(201).send(jobOffer);
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ message: "Something wrong" });
-  }
-});
-
-router.get("/", async (req: Request, res: Response) => {
-  try {
-    const jobOffers = await JobOffer.find();
-    res.json(jobOffers);
-  } catch (e) {
-    res.status(500).json({ message: "Error, no job offers" });
-  }
-});
+export default router;

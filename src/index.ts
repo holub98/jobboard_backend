@@ -2,7 +2,8 @@ import express, { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth";
-import usersRoutes from "./routes/users";
+import companyRoutes from "./routes/companies";
+import offersRoutes from "./routes/jobOffer";
 
 mongoose.connect(process.env.DATABASE_URL as string);
 
@@ -19,7 +20,8 @@ app.use((req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/users", usersRoutes);
+app.use("/api/company", companyRoutes);
+app.use("api/job-offer", offersRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.send("Welcome to Express");
