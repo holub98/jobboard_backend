@@ -18,7 +18,7 @@ export type CompanyType = {
 
 export type JobOfferType = {
   _id: string;
-  userId: string;
+  companyId: string;
   name: string;
   earnings: string[];
   remotly: string;
