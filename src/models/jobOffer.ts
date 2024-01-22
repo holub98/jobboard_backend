@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { JobOfferType } from "./type";
 
 const jobOfferSchema = new mongoose.Schema<JobOfferType>({
-  userId: { type: String, required: true },
+  companyId: { type: String, required: true },
   name: { type: String, required: true },
   earnings: [{ type: String, required: true }],
   remotly: {
