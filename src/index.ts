@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
+import authRoutes from "./routes/auth";
+import usersRoutes from "./routes/users";
 
 mongoose.connect(process.env.DATABASE_URL as string);
 
@@ -15,6 +17,9 @@ app.use((req: Request, res: Response) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
 });
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.send("Welcome to Express");
