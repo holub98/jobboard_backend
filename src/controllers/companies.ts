@@ -1,7 +1,10 @@
 import express, { Request, Response } from "express";
-import User from "../models/company";
+import Company from "../models/company";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
+import multer from "multer";
+import cloudinary from "cloudinary";
+import { CompanyType } from "../models/type";
 
 const router = express.Router();
 
@@ -9,11 +12,11 @@ export const myCompany = async (req: Request, res: Response) => {
   const companyId = req.companyId;
 
   try {
-    const user = await User.findById(companyId).select("-password");
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
+    const company = await Company.findById(companyId).select("-password");
+    if (!company) {
+      return res.status(400).json({ message: "Company not found" });
     }
-    res.json(user);
+    res.json(company);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went wrong" });
@@ -27,6 +30,16 @@ export const registerValidation = [
     min: 6,
   }),
 ];
+
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
+upload.array("imageFiles", 10);
+
 export const register = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -34,19 +47,19 @@ export const register = async (req: Request, res: Response) => {
   }
 
   try {
-    let user = await User.findOne({
-      email: req.body.email,
-    });
+    const imageFiles = req.files as Express.Multer.File[];
+    const newCompany: CompanyType = req.body;
 
-    if (user) {
-      return res.status(400).json({ message: "User already exists" });
-    }
+    const images = await uploadImages(imageFiles);
 
-    user = new User(req.body);
-    await user.save();
+    newCompany.imageUrls = images;
+
+    const company = new Company(newCompany);
+
+    await company.save();
 
     const token = jwt.sign(
-      { companyId: user.id },
+      { companyId: company.id },
       process.env.JWT_SECRET_KEY as string,
       {
         expiresIn: "1d",
@@ -58,11 +71,23 @@ export const register = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 86400000,
     });
-    return res.status(200).send({ message: "User registered OK" });
+    return res.status(200).send({ message: "Company registered OK" });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Something went wrong" });
   }
+};
+
+const uploadImages = async (imageFiles: Express.Multer.File[]) => {
+  const uploadPromises = imageFiles.map(async (image) => {
+    const b64 = Buffer.from(image.buffer).toString("base64");
+    let dataURI = "data:" + image.mimetype + ";base64," + b64;
+    const res = await cloudinary.v2.uploader.upload(dataURI);
+    return res.url;
+  });
+
+  const imageUrls = await Promise.all(uploadPromises);
+  return imageUrls;
 };
 
 export default router;
