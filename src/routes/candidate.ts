@@ -9,6 +9,8 @@ import verifyToken from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/send", uploadPdf, sendCandidate);
-router.get("/", verifyToken, getCandidates);
-router.get("/:id", verifyToken, getSingleCandidates);
+router.post("/:offerId/send", uploadPdf, sendCandidate);
+router.get("/:offerId", verifyToken, getCandidates);
+router.get("/:offerId/:candidateId", verifyToken, getSingleCandidates);
+
+export default router;

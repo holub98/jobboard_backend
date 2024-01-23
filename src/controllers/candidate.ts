@@ -5,6 +5,7 @@ import multer from "multer";
 import Candidate from "../models/candidate";
 
 import verifyToken from "../middleware/auth";
+import JobOffer from "../models/jobOffer";
 
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -23,6 +24,7 @@ export const sendCandidate = async (req: Request, res: Response) => {
 
     const pdf = await uploadImage(imagePdf);
     newCandidate.cv = pdf;
+    newCandidate.offerId = req.params.offerId;
 
     const candidate = new Candidate(newCandidate);
 
@@ -34,7 +36,7 @@ export const sendCandidate = async (req: Request, res: Response) => {
 
 export const getCandidates = async (req: Request, res: Response) => {
   try {
-    const candidates = await Candidate.find();
+    const candidates = await Candidate.find({ offerId: req.params.offerId });
     res.json(candidates);
   } catch (e) {
     res.status(500).send({ message: "Something wrong" });
@@ -42,10 +44,20 @@ export const getCandidates = async (req: Request, res: Response) => {
 };
 
 export const getSingleCandidates = async (req: Request, res: Response) => {
-  const id = req.params.id.toString();
-
   try {
-    const candidate = await Candidate.findById(id);
+    const offer = await JobOffer.findOne({
+      _id: req.params.offerId,
+      companyId: req.companyId,
+    });
+
+    if (!offer) {
+      return res.send(404);
+    }
+    const candidate = await Candidate.findOne({
+      _id: req.params.candidateId,
+      offerId: offer.companyId,
+    });
+
     res.json(candidate);
   } catch (e) {
     res.status(500).send({ message: "Somethink wrong" });

@@ -16,10 +16,10 @@ router.post("/", verifyToken, createOffer);
 
 router.get("/", getOffers);
 
-router.get("/id", getSingleOffer);
+router.get("/:offerId", getSingleOffer);
 
-router.put("/id", verifyToken, updateOffer);
+router.put("/:OfferId", verifyToken, updateOffer);
 
-router.delete("/id", verifyToken, deleteOffeer);
+router.delete("/offerId", verifyToken, deleteOffeer);
 
 export default router;

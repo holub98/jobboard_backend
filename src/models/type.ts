@@ -35,3 +35,9 @@ export type CandidateType = {
   phone: string;
   cv: string;
 };
+
+export type OfferCandidateType = {
+  _id: string;
+  candidateId: string;
+  offerId: string;
+};
