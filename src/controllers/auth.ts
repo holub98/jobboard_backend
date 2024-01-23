@@ -1,9 +1,9 @@
 import { check, validationResult } from "express-validator";
-import User from "../models/company";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import express, { Request, Response } from "express";
 import verifyToken from "../middleware/auth";
+import Company from "../models/company";
 
 const router = express.Router();
 
@@ -23,18 +23,18 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
+    const company = await Company.findOne({ email });
+    if (!company) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, company.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid Credentials" });
     }
 
     const token = jwt.sign(
-      { companyId: user.id },
+      { companyId: company.id },
       process.env.JWT_SECRET_KEY as string,
       {
         expiresIn: "1d",
@@ -46,7 +46,7 @@ export const login = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 86400000,
     });
-    res.status(200).json({ companyId: user._id });
+    res.status(200).json({ companyId: company._id });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
