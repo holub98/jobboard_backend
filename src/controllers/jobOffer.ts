@@ -27,10 +27,8 @@ export const getOffers = async (req: Request, res: Response) => {
 };
 
 export const getSingleOffer = async (req: Request, res: Response) => {
-  const id = req.params.id.toString();
-
   try {
-    const offer = await JobOffer.findOne({ _id: id });
+    const offer = await JobOffer.findOne({ _id: req.params.offerId });
     res.json(offer);
   } catch (e) {
     res.status(500).json({ message: "Something wrong" });
@@ -40,7 +38,7 @@ export const getSingleOffer = async (req: Request, res: Response) => {
 export const updateOffer = async (req: Request, res: Response) => {
   try {
     const offer = await JobOffer.findOneAndUpdate({
-      _id: req.params.id,
+      _id: req.params.offerId,
       companyId: req.companyId,
     });
 
@@ -56,10 +54,9 @@ export const updateOffer = async (req: Request, res: Response) => {
 };
 
 export const deleteOffeer = async (req: Request, res: Response) => {
-  const id = req.params.id;
   try {
     const offer = await JobOffer.findOneAndDelete({
-      _id: id,
+      _id: req.params.offerId,
       companyId: req.companyId,
     });
     if (!offer) {
