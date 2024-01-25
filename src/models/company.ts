@@ -3,19 +3,19 @@ import bcrypt from "bcryptjs";
 import { CompanyType, LocalizationType } from "./type";
 
 const localizationSchema = new mongoose.Schema<LocalizationType>({
-  country: { type: String, required: true, unique: true },
-  city: { type: String, required: true, unique: true },
-  street: { type: String, required: true, unique: true },
-  number: { type: String, required: true, unique: true },
-  zipCode: { type: String, required: true, unique: true },
+  country: { type: String, required: true },
+  city: { type: String, required: true },
+  street: { type: String, required: true },
+  number: { type: String, required: true },
+  zipCode: { type: String, required: true },
 });
 
 const companySchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
-  localization: [localizationSchema],
-  imageUrls: [{ type: String, required: true }],
+  localization: localizationSchema,
+  imageUrls: [{ type: String, required: false }],
   workingSince: { type: Date, required: true },
 });
 

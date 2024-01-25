@@ -3,8 +3,6 @@ import { CandidateType } from "../models/type";
 import cloudinary from "cloudinary";
 import multer from "multer";
 import Candidate from "../models/candidate";
-
-import verifyToken from "../middleware/auth";
 import JobOffer from "../models/jobOffer";
 
 const storage = multer.memoryStorage();
@@ -22,15 +20,16 @@ export const sendCandidate = async (req: Request, res: Response) => {
     const imagePdf = req.file as Express.Multer.File;
     const newCandidate: CandidateType = req.body;
 
-    const pdf = await uploadImage(imagePdf);
-    newCandidate.cv = pdf;
+    // const pdf = await uploadImage(imagePdf);
+    // newCandidate.cv = pdf;
     newCandidate.offerId = req.params.offerId;
 
     const candidate = new Candidate(newCandidate);
 
     await candidate.save();
+    res.json(candidate);
   } catch (e) {
-    res.status(500).send({ message: "Something wrong" });
+    res.status(500).send({ message: e });
   }
 };
 
@@ -55,7 +54,7 @@ export const getSingleCandidates = async (req: Request, res: Response) => {
     }
     const candidate = await Candidate.findOne({
       _id: req.params.candidateId,
-      offerId: offer.companyId,
+      offerId: offer._id,
     });
 
     res.json(candidate);
