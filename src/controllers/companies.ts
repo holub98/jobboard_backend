@@ -50,9 +50,9 @@ export const register = async (req: Request, res: Response) => {
     const imageFiles = req.files as Express.Multer.File[];
     const newCompany: CompanyType = req.body;
 
-    const images = await uploadImages(imageFiles);
+    // const images = await uploadImages(imageFiles);
 
-    newCompany.imageUrls = images;
+    // newCompany.imageUrls = images;
 
     const company = new Company(newCompany);
 
@@ -78,16 +78,16 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-const uploadImages = async (imageFiles: Express.Multer.File[]) => {
-  const uploadPromises = imageFiles.map(async (image) => {
-    const b64 = Buffer.from(image.buffer).toString("base64");
-    let dataURI = "data:" + image.mimetype + ";base64," + b64;
-    const res = await cloudinary.v2.uploader.upload(dataURI);
-    return res.url;
-  });
+// const uploadImages = async (imageFiles: Express.Multer.File[]) => {
+//   const uploadPromises = imageFiles.map(async (image) => {
+//     const b64 = Buffer.from(image.buffer).toString("base64");
+//     let dataURI = "data:" + image.mimetype + ";base64," + b64;
+//     const res = await cloudinary.v2.uploader.upload(dataURI);
+//     return res.url;
+//   });
 
-  const imageUrls = await Promise.all(uploadPromises);
-  return imageUrls;
-};
+//   const imageUrls = await Promise.all(uploadPromises);
+//   return imageUrls;
+// };
 
 export default router;

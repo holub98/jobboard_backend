@@ -36,11 +36,16 @@ export const getSingleOffer = async (req: Request, res: Response) => {
 };
 
 export const updateOffer = async (req: Request, res: Response) => {
+  const update: JobOfferType = req.body;
   try {
-    const offer = await JobOffer.findOneAndUpdate({
-      _id: req.params.offerId,
-      companyId: req.companyId,
-    });
+    const offer = await JobOffer.findOneAndUpdate(
+      {
+        _id: req.params.offerId,
+        companyId: req.companyId,
+      },
+      update,
+      { new: true }
+    );
 
     if (!offer) {
       return res.status(404).json({ message: "Offer not found" });

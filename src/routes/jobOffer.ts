@@ -1,7 +1,5 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import verifyToken from "../middleware/auth";
-import { JobOfferType } from "../models/type";
-import JobOffer from "../models/jobOffer";
 import {
   createOffer,
   deleteOffeer,
@@ -18,8 +16,8 @@ router.get("/", getOffers);
 
 router.get("/:offerId", getSingleOffer);
 
-router.put("/:OfferId", verifyToken, updateOffer);
+router.put("/:offerId", verifyToken, updateOffer);
 
-router.delete("/offerId", verifyToken, deleteOffeer);
+router.delete("/:offerId", verifyToken, deleteOffeer);
 
 export default router;

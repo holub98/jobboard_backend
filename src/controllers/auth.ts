@@ -2,7 +2,6 @@ import { check, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import express, { Request, Response } from "express";
-import verifyToken from "../middleware/auth";
 import Company from "../models/company";
 
 const router = express.Router();
@@ -13,6 +12,15 @@ export const LoginValidation = [
     min: 6,
   }),
 ];
+
+export const validate = async (req: Request, res: Response) => {
+  const companyId = req.companyId;
+  try {
+    res.status(200).send({ companyId });
+  } catch (e) {
+    res.status(404).send({ e });
+  }
+};
 
 export const login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -46,7 +54,7 @@ export const login = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 86400000,
     });
-    res.status(200).json({ companyId: company._id });
+    res.status(200).json({ token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
