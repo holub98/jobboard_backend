@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { CandidateType } from "../models/type";
+import { CandidateType } from "../models/type.js";
 import cloudinary from "cloudinary";
 import multer from "multer";
-import Candidate from "../models/candidate";
-import JobOffer from "../models/jobOffer";
+import Candidate from "../models/candidate.js";
+import JobOffer from "../models/jobOffer.js";
 
 const storage = multer.memoryStorage();
 const upload = multer({

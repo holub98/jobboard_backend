@@ -1,11 +1,11 @@
 import express from "express";
-import verifyToken from "../middleware/auth";
+import verifyToken from "../middleware/auth.js";
 import {
   myCompany,
   register,
   registerValidation,
   uploadImg,
-} from "../controllers/companies";
+} from "../controllers/companies.js";
 
 const router = express.Router();
 

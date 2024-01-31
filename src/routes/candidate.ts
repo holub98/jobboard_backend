@@ -4,8 +4,8 @@ import {
   getSingleCandidates,
   sendCandidate,
   uploadPdf,
-} from "../controllers/candidate";
-import verifyToken from "../middleware/auth";
+} from "../controllers/candidate.js";
+import verifyToken from "../middleware/auth.js";
 
 const router = express.Router();
 

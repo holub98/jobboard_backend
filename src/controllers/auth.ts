@@ -2,7 +2,7 @@ import { check, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import express, { Request, Response } from "express";
-import Company from "../models/company";
+import Company from "../models/company.js";
 
 const router = express.Router();
 
