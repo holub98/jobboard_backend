@@ -20,8 +20,8 @@ export const sendCandidate = async (req: Request, res: Response) => {
     const imagePdf = req.file as Express.Multer.File;
     const newCandidate: CandidateType = req.body;
 
-    // const pdf = await uploadImage(imagePdf);
-    // newCandidate.cv = pdf;
+    const pdf = await uploadImage(imagePdf);
+    newCandidate.cv = pdf;
     newCandidate.offerId = req.params.offerId;
 
     const candidate = new Candidate(newCandidate);
