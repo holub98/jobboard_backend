@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { CompanyType, LocalizationType } from "./type";
+import { CompanyType, LocalizationType } from "./type.js";
 
 const localizationSchema = new mongoose.Schema<LocalizationType>({
   country: { type: String, required: true },

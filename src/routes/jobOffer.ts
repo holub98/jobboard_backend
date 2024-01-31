@@ -1,12 +1,12 @@
 import express from "express";
-import verifyToken from "../middleware/auth";
+import verifyToken from "../middleware/auth.js";
 import {
   createOffer,
   deleteOffeer,
   getOffers,
   getSingleOffer,
   updateOffer,
-} from "../controllers/jobOffer";
+} from "../controllers/jobOffer.js";
 
 const router = express.Router();
 

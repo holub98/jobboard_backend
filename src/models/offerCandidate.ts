@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { OfferCandidateType } from "./type";
+import { OfferCandidateType } from "./type.js";
 
 const offerCandidateSchema = new mongoose.Schema<OfferCandidateType>({
   candidateId: { type: String, required: true },

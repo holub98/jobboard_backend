@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { JobOfferType } from "../models/type";
-import JobOffer from "../models/jobOffer";
+import { JobOfferType } from "../models/type.js";
+import JobOffer from "../models/jobOffer.js";
 
 export const createOffer = async (req: Request, res: Response) => {
   try {

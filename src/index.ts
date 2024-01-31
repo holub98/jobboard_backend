@@ -1,10 +1,10 @@
 import express, { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
-import authRoutes from "./routes/auth";
-import companyRoutes from "./routes/companies";
-import offersRoutes from "./routes/jobOffer";
-import candiateRoutes from "./routes/candidate";
+import authRoutes from "./routes/auth.js";
+import companyRoutes from "./routes/companies.js";
+import offersRoutes from "./routes/jobOffer.js";
+import candiateRoutes from "./routes/candidate.js";
 import cookieParser from "cookie-parser";
 
 mongoose.connect(process.env.DATABASE_URL as string);
