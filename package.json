@@ -6,7 +6,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ts-node --esm src/index.ts",
+    "dev": "nodemon --esm src/index.ts",
     "start": "ts-node --esm src/index.ts"
   },
   "keywords": [],
@@ -24,7 +24,8 @@
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.0",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

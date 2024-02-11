@@ -15,8 +15,6 @@ const companySchema = new mongoose.Schema({
   password: { type: String, required: true },
   name: { type: String, required: true },
   localization: localizationSchema,
-  imageUrls: [{ type: String, required: false }],
-  workingSince: { type: Date, required: true },
 });
 
 companySchema.pre("save", async function (next) {

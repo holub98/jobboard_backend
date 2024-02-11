@@ -6,6 +6,7 @@ import companyRoutes from "./routes/companies.js";
 import offersRoutes from "./routes/jobOffer.js";
 import candiateRoutes from "./routes/candidate.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 mongoose.connect(process.env.DATABASE_URL as string);
 
@@ -14,13 +15,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use((req: Request, res: Response) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-// });
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/company", companyRoutes);
@@ -28,6 +28,8 @@ app.use("/api/job-offer", offersRoutes);
 app.use("/api/candidates", candiateRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   res.send("Welcome to Express");
 });
 
