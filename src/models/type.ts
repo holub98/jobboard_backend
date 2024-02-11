@@ -11,9 +11,7 @@ export type CompanyType = {
   email: string;
   password: string;
   name: string;
-  localization: LocalizationType[];
-  imageUrls: string[];
-  workSince: Date;
+  localization: LocalizationType;
 };
 
 export type JobOfferType = {

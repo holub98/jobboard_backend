@@ -4,8 +4,6 @@ import jwt from "jsonwebtoken";
 import express, { Request, Response } from "express";
 import Company from "../models/company.js";
 
-const router = express.Router();
-
 export const LoginValidation = [
   check("email", "Email is required").isEmail(),
   check("password", "Password with 6 or more characters required").isLength({
@@ -15,8 +13,9 @@ export const LoginValidation = [
 
 export const validate = async (req: Request, res: Response) => {
   const companyId = req.companyId;
+  const isAuth = true;
   try {
-    res.status(200).send({ companyId });
+    res.status(200).send({ companyId, isAuth });
   } catch (e) {
     res.status(404).send({ e });
   }
@@ -49,12 +48,21 @@ export const login = async (req: Request, res: Response) => {
       }
     );
 
+    const domain = req.headers.host;
+    const url = req.headers.referer;
+
     res.cookie("auth_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      domain: "",
+      httpOnly: false,
+      secure: true,
       maxAge: 86400000,
     });
-    res.status(200).json({ token });
+    res.status(200).json({
+      data: { id: company.id, name: company.name },
+      token,
+      domain,
+      url,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
