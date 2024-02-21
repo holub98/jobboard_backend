@@ -18,10 +18,32 @@ export type JobOfferType = {
   _id: string;
   companyId: string;
   name: string;
-  earnings: string[];
-  remotly: string;
+  earnings: {
+    from: string;
+    to: string;
+  };
+  workDirection: string;
   requirements: string[];
   description: string;
+};
+
+export type ExperienceType = {
+  companyName: string;
+  job: string;
+  dateFrom: Date;
+  dateTo?: Date;
+  description: string;
+};
+
+export type EducationType = {
+  schoolName: string;
+  dateFrom: Date;
+  dateTo?: Date;
+  faculty: string;
+};
+export type LanguagesType = {
+  name: string;
+  level: string;
 };
 
 export type CandidateType = {
@@ -31,11 +53,9 @@ export type CandidateType = {
   lastName: string;
   email: string;
   phone: string;
-  cv: string;
-};
-
-export type OfferCandidateType = {
-  _id: string;
-  candidateId: string;
-  offerId: string;
+  experience?: ExperienceType[];
+  education: EducationType[];
+  languages: LanguagesType[];
+  stack: string[];
+  another: string;
 };
