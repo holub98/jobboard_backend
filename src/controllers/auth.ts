@@ -48,9 +48,6 @@ export const login = async (req: Request, res: Response) => {
       }
     );
 
-    const domain = req.headers.host;
-    const url = req.headers.referer;
-
     res.cookie("auth_token", token, {
       domain: "",
       httpOnly: false,
@@ -59,9 +56,6 @@ export const login = async (req: Request, res: Response) => {
     });
     res.status(200).json({
       data: { id: company.id, name: company.name },
-      token,
-      domain,
-      url,
     });
   } catch (error) {
     console.log(error);

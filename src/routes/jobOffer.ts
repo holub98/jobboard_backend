@@ -2,7 +2,9 @@ import express from "express";
 import verifyToken from "../middleware/auth.js";
 import {
   createOffer,
-  deleteOffeer,
+  deleteOffer,
+  getCompanyOffersInfo,
+  getMyOffers,
   getOffers,
   getSingleOffer,
   updateOffer,
@@ -10,14 +12,18 @@ import {
 
 const router = express.Router();
 
-router.post("/", verifyToken, createOffer);
+router.post("/create", verifyToken, createOffer);
 
 router.get("/", getOffers);
+
+router.get("/my-offer", verifyToken, getMyOffers);
+
+router.get("/my-offer-count", verifyToken, getCompanyOffersInfo);
 
 router.get("/:offerId", getSingleOffer);
 
 router.put("/:offerId", verifyToken, updateOffer);
 
-router.delete("/:offerId", verifyToken, deleteOffeer);
+router.delete("/:offerId", verifyToken, deleteOffer);
 
 export default router;

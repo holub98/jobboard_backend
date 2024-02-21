@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { JobOfferType } from "../models/type.js";
 import JobOffer from "../models/jobOffer.js";
+import Company from "../models/company.js";
+import Candidate from "../models/candidate.js";
 
 export const createOffer = async (req: Request, res: Response) => {
   try {
@@ -13,7 +15,7 @@ export const createOffer = async (req: Request, res: Response) => {
     res.status(201).send(jobOffer);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ message: "Something wrong" });
+    res.status(500).json({ message: e });
   }
 };
 
@@ -21,6 +23,29 @@ export const getOffers = async (req: Request, res: Response) => {
   try {
     const jobOffers = await JobOffer.find();
     res.json(jobOffers);
+  } catch (e) {
+    res.status(500).json({ message: "Error, no job offers" });
+  }
+};
+
+export const getMyOffers = async (req: Request, res: Response) => {
+  try {
+    const jobOffers = await JobOffer.find({ companyId: req.companyId });
+
+    res.json(jobOffers);
+  } catch (e) {
+    res.status(500).json({ message: "Error, no job offers" });
+  }
+};
+
+export const getCompanyOffersInfo = async (req: Request, res: Response) => {
+  try {
+    const company = await Company.findById(req.companyId).select("-password");
+    if (!company) {
+      return res.status(400).json({ message: "Company not found" });
+    }
+    const count = await JobOffer.countDocuments({ companyId: req.companyId });
+    res.json({ name: company.name, count: count });
   } catch (e) {
     res.status(500).json({ message: "Error, no job offers" });
   }
@@ -54,11 +79,11 @@ export const updateOffer = async (req: Request, res: Response) => {
     await offer.save();
     res.status(201).json(offer);
   } catch (e) {
-    res.status(500).json({ message: "Something wrong" });
+    res.status(500).json({ message: e });
   }
 };
 
-export const deleteOffeer = async (req: Request, res: Response) => {
+export const deleteOffer = async (req: Request, res: Response) => {
   try {
     const offer = await JobOffer.findOneAndDelete({
       _id: req.params.offerId,
