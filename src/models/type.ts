@@ -25,6 +25,7 @@ export type JobOfferType = {
   workDirection: string;
   requirements: string[];
   description: string;
+  createAt: Date;
 };
 
 export type ExperienceType = {
@@ -58,4 +59,11 @@ export type CandidateType = {
   languages: LanguagesType[];
   stack: string[];
   another: string;
+};
+
+export type OffersFilterType = {
+  name?: string;
+  requirements?: string[];
+  workDirection?: string;
+  localization?: string;
 };

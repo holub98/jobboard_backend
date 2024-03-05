@@ -6,6 +6,7 @@ import {
   getCompanyOffersInfo,
   getMyOffers,
   getOffers,
+  getRecomendedOffer,
   getSingleOffer,
   updateOffer,
 } from "../controllers/jobOffer.js";
@@ -14,7 +15,9 @@ const router = express.Router();
 
 router.post("/create", verifyToken, createOffer);
 
-router.get("/", getOffers);
+router.get("/recomended", getRecomendedOffer);
+
+router.get(`/`, getOffers);
 
 router.get("/my-offer", verifyToken, getMyOffers);
 

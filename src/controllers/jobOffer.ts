@@ -1,15 +1,22 @@
 import { Request, Response } from "express";
-import { JobOfferType } from "../models/type.js";
+import { JobOfferType, OffersFilterType } from "../models/type.js";
 import JobOffer from "../models/jobOffer.js";
 import Company from "../models/company.js";
 import Candidate from "../models/candidate.js";
+
+export type FilterType = {
+  name?: string | RegExp;
+  requirements?: string[];
+  workDirection?: string;
+  localizationCompany?: string[];
+};
 
 export const createOffer = async (req: Request, res: Response) => {
   try {
     const newJobOffer: JobOfferType = req.body;
 
     newJobOffer.companyId = req.companyId;
-
+    newJobOffer.createAt = new Date();
     const jobOffer = new JobOffer(newJobOffer);
     await jobOffer.save();
     res.status(201).send(jobOffer);
@@ -21,7 +28,27 @@ export const createOffer = async (req: Request, res: Response) => {
 
 export const getOffers = async (req: Request, res: Response) => {
   try {
-    const jobOffers = await JobOffer.find();
+    const filterOffer: OffersFilterType = req.query;
+
+    let body: FilterType = {};
+    if (filterOffer.name) {
+      body.name = new RegExp(filterOffer.name, "i");
+    }
+    if (filterOffer.localization) {
+      const company = await Company.find({
+        "localization.city": filterOffer.localization,
+      });
+      if (company) {
+        body.localizationCompany = company.map((it) => it._id);
+      }
+    }
+    if (filterOffer.requirements) {
+      body.requirements = { $all: filterOffer.requirements } as any;
+    }
+    if (filterOffer.workDirection) {
+      body.workDirection = filterOffer.workDirection;
+    }
+    const jobOffers = await JobOffer.find(body);
     res.json(jobOffers);
   } catch (e) {
     res.status(500).json({ message: "Error, no job offers" });
@@ -57,6 +84,17 @@ export const getSingleOffer = async (req: Request, res: Response) => {
     res.json(offer);
   } catch (e) {
     res.status(500).json({ message: "Something wrong" });
+  }
+};
+
+export const getRecomendedOffer = async (req: Request, res: Response) => {
+  try {
+    const count = await JobOffer.countDocuments({});
+    const random = Math.floor(Math.random() * count - 3);
+    const offer = await JobOffer.find().skip(random).limit(3);
+    res.json(offer);
+  } catch (e) {
+    res.status(500).json({ message: "bleble" });
   }
 };
 

@@ -42,9 +42,7 @@ export const register = async (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       maxAge: 86400000,
     });
-    return res
-      .status(200)
-      .send({ body: { id: company.id, name: company.name }, token });
+    return res.status(200).send({ id: company.id, name: company.name });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error });
