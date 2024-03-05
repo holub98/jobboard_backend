@@ -90,11 +90,11 @@ export const getSingleOffer = async (req: Request, res: Response) => {
 export const getRecomendedOffer = async (req: Request, res: Response) => {
   try {
     const count = await JobOffer.countDocuments({});
-    const random = Math.floor(Math.random() * count);
+    const random = Math.floor(Math.random() * count - 3);
     const offer = await JobOffer.find().skip(random).limit(3);
     res.json(offer);
   } catch (e) {
-    res.status(500).json({ message: "bleble" });
+    res.status(500).json({ message: e });
   }
 };
 
