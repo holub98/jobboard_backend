@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ES2020",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -17,6 +16,7 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["src"],
-  "ts-node": { "esm": true }
+  "include": ["src/**/*.ts", "index.ts"],
+  "exclude": ["node_modules", ".vscode"],
+  "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" }
 }
