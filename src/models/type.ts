@@ -33,7 +33,6 @@ export type ExperienceType = {
   job: string;
   dateFrom: Date;
   dateTo?: Date;
-  description: string;
 };
 
 export type EducationType = {
