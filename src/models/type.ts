@@ -25,20 +25,20 @@ export type JobOfferType = {
   workDirection: string;
   requirements: string[];
   description: string;
-  createAt: Date;
+  createAt: String;
 };
 
 export type ExperienceType = {
   companyName: string;
   job: string;
-  dateFrom: Date;
-  dateTo?: Date;
+  dateFrom: String;
+  dateTo?: String;
 };
 
 export type EducationType = {
   schoolName: string;
-  dateFrom: Date;
-  dateTo?: Date;
+  dateFrom: String;
+  dateTo?: String;
   faculty: string;
 };
 export type LanguagesType = {
