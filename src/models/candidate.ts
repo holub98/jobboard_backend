@@ -9,14 +9,13 @@ import {
 const experienceSchema = new mongoose.Schema<ExperienceType>({
   companyName: { type: String, required: true },
   job: { type: String, required: true },
-  dateFrom: { type: Date, required: true },
-  dateTo: { type: Date, required: false },
-  description: { type: String, required: true },
+  dateFrom: { type: String, required: true },
+  dateTo: { type: String, required: false },
 });
 const educationSchema = new mongoose.Schema<EducationType>({
   schoolName: { type: String, required: true },
-  dateFrom: { type: Date, required: true },
-  dateTo: { type: Date, required: false },
+  dateFrom: { type: String, required: true },
+  dateTo: { type: String, required: false },
   faculty: { type: String, required: true },
 });
 const languagesSchema = new mongoose.Schema<LanguagesType>({

@@ -49,7 +49,15 @@ export const getOffers = async (req: Request, res: Response) => {
       body.workDirection = filterOffer.workDirection;
     }
     const jobOffers = await JobOffer.find(body);
-    res.json(jobOffers);
+    const companyOffer = await Company.find().select("-email -password");
+
+    const allOffers = jobOffers.map((offer) => {
+      return {
+        offer,
+        company: companyOffer.find((it) => it._id == offer.companyId),
+      };
+    });
+    res.json(allOffers);
   } catch (e) {
     res.status(500).json({ message: "Error, no job offers" });
   }
@@ -81,9 +89,14 @@ export const getCompanyOffersInfo = async (req: Request, res: Response) => {
 export const getSingleOffer = async (req: Request, res: Response) => {
   try {
     const offer = await JobOffer.findOne({ _id: req.params.offerId });
-    res.json(offer);
+
+    const company = await Company.findById(offer?.companyId).select(
+      "-email -password"
+    );
+
+    res.json({ offer, company });
   } catch (e) {
-    res.status(500).json({ message: "Something wrong" });
+    res.status(500).json({ message: e });
   }
 };
 

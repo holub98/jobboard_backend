@@ -15,7 +15,7 @@ const jobOfferSchema = new mongoose.Schema<JobOfferType>({
   },
   requirements: [{ type: String, required: true }],
   description: { type: String, required: true },
-  createAt: { type: Date, required: true },
+  createAt: { type: String, required: true },
 });
 
 const JobOffer = mongoose.model<JobOfferType>("JobOffer", jobOfferSchema);
