@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { CandidateType } from "../models/type.js";
 import Candidate from "../models/candidate.js";
 import JobOffer from "../models/jobOffer.js";
+import Company from "src/models/company.js";
 
 export const sendCandidate = async (req: Request, res: Response) => {
   try {
@@ -41,8 +42,9 @@ export const getSingleCandidates = async (req: Request, res: Response) => {
       _id: req.params.candidateId,
       offerId: offer._id,
     });
+    const company = await Company.findById(req.companyId);
 
-    res.json(candidate);
+    res.json({ candidate, offer, company });
   } catch (e) {
     res.status(500).send({ message: e });
   }
