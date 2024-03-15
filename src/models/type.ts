@@ -26,7 +26,6 @@ export type JobOfferType = {
   workDirection: string;
   requirements: string[];
   description: string;
-  createAt: String;
 };
 
 export type ExperienceType = {

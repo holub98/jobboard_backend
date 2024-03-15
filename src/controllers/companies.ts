@@ -1,8 +1,9 @@
 import express, { Request, Response } from "express";
 import Company from "../models/company.js";
 import jwt from "jsonwebtoken";
-import { CompanyType } from "../models/type.js";
+import { CandidateType, CompanyType } from "../models/type.js";
 import JobOffer from "src/models/jobOffer.js";
+import Candidate from "src/models/candidate.js";
 
 const router = express.Router();
 
@@ -104,11 +105,18 @@ export const updateMyCompany = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
   try {
-    const account = await Company.findByIdAndDelete(req.companyId);
+    const account = await Company.findById(req.companyId);
     if (!account) {
       return res.status(401);
     }
-    await account.save();
+    const offers = await JobOffer.find({ companyId: account._id });
+
+    offers.map(async (offer) => {
+      await Candidate.deleteMany({ offerId: offer._id });
+    });
+    await JobOffer.deleteMany({ companyId: account._id });
+    Company.findByIdAndDelete(req.companyId);
+
     res.cookie("auth_token", "", {
       expires: new Date(0),
     });
