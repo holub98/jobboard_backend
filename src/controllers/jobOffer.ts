@@ -16,7 +16,6 @@ export const createOffer = async (req: Request, res: Response) => {
     const newJobOffer: JobOfferType = req.body;
 
     newJobOffer.companyId = req.companyId;
-    newJobOffer.createAt = new Date();
     const jobOffer = new JobOffer(newJobOffer);
     await jobOffer.save();
     res.status(201).send(jobOffer);

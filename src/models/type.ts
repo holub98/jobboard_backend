@@ -12,6 +12,7 @@ export type CompanyType = {
   password: string;
   name: string;
   localization: LocalizationType;
+  description: string;
 };
 
 export type JobOfferType = {
