@@ -2,13 +2,12 @@ import { Request, Response } from "express";
 import { JobOfferType, OffersFilterType } from "../models/type.js";
 import JobOffer from "../models/jobOffer.js";
 import Company from "../models/company.js";
-import Candidate from "../models/candidate.js";
 
 export type FilterType = {
   name?: string | RegExp;
   requirements?: string[];
   workDirection?: string;
-  localizationCompany?: string[];
+  companyId?: string[];
 };
 
 export const createOffer = async (req: Request, res: Response) => {
@@ -20,7 +19,6 @@ export const createOffer = async (req: Request, res: Response) => {
     await jobOffer.save();
     res.status(201).send(jobOffer);
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: e });
   }
 };
@@ -28,17 +26,16 @@ export const createOffer = async (req: Request, res: Response) => {
 export const getOffers = async (req: Request, res: Response) => {
   try {
     const filterOffer: OffersFilterType = req.query;
-
     let body: FilterType = {};
     if (filterOffer.name) {
       body.name = new RegExp(filterOffer.name, "i");
     }
     if (filterOffer.localization) {
       const company = await Company.find({
-        "localization.city": filterOffer.localization,
+        "localization.city": new RegExp(filterOffer.localization, "i") ,
       });
       if (company) {
-        body.localizationCompany = company.map((it) => it._id);
+        body.companyId = company.map((it) => it._id);
       }
     }
     if (filterOffer.requirements) {
@@ -94,6 +91,15 @@ export const getSingleOffer = async (req: Request, res: Response) => {
     );
 
     res.json({ offer, company });
+  } catch (e) {
+    res.status(500).json({ message: e });
+  }
+};
+
+export const getMySingleOffer = async (req: Request, res: Response) => {
+  try {
+    const offer = await JobOffer.findOne({ _id: req.params.offerId });
+    res.json( offer );
   } catch (e) {
     res.status(500).json({ message: e });
   }
