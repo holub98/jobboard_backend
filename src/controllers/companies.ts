@@ -18,7 +18,6 @@ export const myCompany = async (req: Request, res: Response) => {
     });
     res.json({ company, myOffersCount });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "something went wrong" });
   }
 };
@@ -46,7 +45,6 @@ export const register = async (req: Request, res: Response) => {
     });
     return res.status(200).send({ id: company.id, name: company.name });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: error });
   }
 };

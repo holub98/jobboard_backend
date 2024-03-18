@@ -5,6 +5,7 @@ import {
   deleteOffer,
   getCompanyOffersInfo,
   getMyOffers,
+  getMySingleOffer,
   getOffers,
   getRecomendedOffer,
   getSingleOffer,
@@ -24,6 +25,8 @@ router.get("/my-offer", verifyToken, getMyOffers);
 router.get("/my-offer-count", verifyToken, getCompanyOffersInfo);
 
 router.get("/:offerId", getSingleOffer);
+
+router.get("/me/:offerId", verifyToken, getMySingleOffer)
 
 router.put("/:offerId", verifyToken, updateOffer);
 
