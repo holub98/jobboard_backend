@@ -1,15 +1,8 @@
 import { check, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import Company from "../models/company.js";
-
-export const LoginValidation = [
-  check("email", "Email is required").isEmail(),
-  check("password", "Password with 6 or more characters required").isLength({
-    min: 6,
-  }),
-];
 
 export const validate = async (req: Request, res: Response) => {
   const companyId = req.companyId;
@@ -55,7 +48,7 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 86400000,
     });
     res.status(200).json({
-      data: { id: company.id, name: company.name, },
+      data: { id: company.id, name: company.name },
     });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });

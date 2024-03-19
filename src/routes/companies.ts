@@ -20,6 +20,6 @@ router.get("/", getAllCompanies);
 router.get("/:companyId", getSingleCompany);
 
 router.put("/update-me", verifyToken, updateMyCompany);
-router.put("/delete-account", verifyToken, deleteAccount);
+router.delete("/delete-account", verifyToken, deleteAccount);
 
 export default router;
