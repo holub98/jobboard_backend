@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { JobOfferType, OffersFilterType } from "../models/type.js";
 import JobOffer from "../models/jobOffer.js";
 import Company from "../models/company.js";
+import Candidate from "src/models/candidate.js";
 
 export type FilterType = {
   name?: string | RegExp;
@@ -32,7 +33,7 @@ export const getOffers = async (req: Request, res: Response) => {
     }
     if (filterOffer.localization) {
       const company = await Company.find({
-        "localization.city": new RegExp(filterOffer.localization, "i") ,
+        "localization.city": new RegExp(filterOffer.localization, "i"),
       });
       if (company) {
         body.companyId = company.map((it) => it._id);
@@ -99,7 +100,7 @@ export const getSingleOffer = async (req: Request, res: Response) => {
 export const getMySingleOffer = async (req: Request, res: Response) => {
   try {
     const offer = await JobOffer.findOne({ _id: req.params.offerId });
-    res.json( offer );
+    res.json(offer);
   } catch (e) {
     res.status(500).json({ message: e });
   }
@@ -108,11 +109,15 @@ export const getMySingleOffer = async (req: Request, res: Response) => {
 export const getRecomendedOffer = async (req: Request, res: Response) => {
   try {
     const count = await JobOffer.countDocuments({});
+    if (count < 3) {
+      return res.json([]);
+    }
     const random = Math.floor(Math.random() * (count - 3));
     const offer = await JobOffer.find().skip(random).limit(3);
+
     res.json(offer);
   } catch (e) {
-    res.status(500).json({ message: e });
+    res.status(404).json({ message: "We do not have any recomended offers" });
   }
 };
 
@@ -141,14 +146,8 @@ export const updateOffer = async (req: Request, res: Response) => {
 
 export const deleteOffer = async (req: Request, res: Response) => {
   try {
-    const offer = await JobOffer.findOneAndDelete({
-      _id: req.params.offerId,
-      companyId: req.companyId,
-    });
-    if (!offer) {
-      return res.status(404).json({ message: "Offer not found" });
-    }
-    await offer.save();
+    await Candidate.deleteMany({ offerId: req.params.offerId });
+    await JobOffer.findByIdAndDelete(req.params.offerId);
   } catch (e) {
     res.status(500).json({ message: "Something wrong" });
   }

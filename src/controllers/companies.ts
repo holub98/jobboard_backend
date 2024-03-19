@@ -103,18 +103,14 @@ export const updateMyCompany = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
   try {
-    const account = await Company.findById(req.companyId);
-    if (!account) {
-      return res.status(401);
-    }
-    const offers = await JobOffer.find({ companyId: account._id });
+    const offers = await JobOffer.find({ companyId: req.companyId });
 
-    offers.map(async (offer) => {
+    for (const offer of offers) {
       await Candidate.deleteMany({ offerId: offer._id });
-    });
-    await JobOffer.deleteMany({ companyId: account._id });
-    Company.findByIdAndDelete(req.companyId);
+    }
+    await JobOffer.deleteMany({ companyId: req.companyId });
 
+    await Company.findByIdAndDelete(req.companyId);
     res.cookie("auth_token", "", {
       expires: new Date(0),
     });
