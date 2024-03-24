@@ -1,9 +1,11 @@
 import express, { Request, Response } from "express";
 import Company from "../models/company.js";
 import jwt from "jsonwebtoken";
-import { CandidateType, CompanyType } from "../models/type.js";
-import JobOffer from "src/models/jobOffer.js";
-import Candidate from "src/models/candidate.js";
+import {  CompanyType } from "../models/type.js";
+import JobOffer from "../models/jobOffer.js";
+import Candidate from "../models/candidate.js";
+import "dotenv/config";
+
 
 const router = express.Router();
 
@@ -39,8 +41,9 @@ export const register = async (req: Request, res: Response) => {
     );
 
     res.cookie("auth_token", token, {
+      domain:`https://jobboard-gabrielh.vercel.app`,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 86400000,
     });
     return res.status(200).send({ id: company.id, name: company.name });

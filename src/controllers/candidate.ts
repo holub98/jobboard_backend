@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { CandidateType } from "../models/type.js";
 import Candidate from "../models/candidate.js";
 import JobOffer from "../models/jobOffer.js";
-import Company from "src/models/company.js";
+import Company from "../models/company.js";
 
 export const sendCandidate = async (req: Request, res: Response) => {
   try {

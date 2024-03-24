@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { JobOfferType, OffersFilterType } from "../models/type.js";
 import JobOffer from "../models/jobOffer.js";
 import Company from "../models/company.js";
-import Candidate from "src/models/candidate.js";
+import Candidate from "../models/candidate.js";
 
 export type FilterType = {
   name?: string | RegExp;
