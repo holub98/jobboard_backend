@@ -90,7 +90,6 @@ export const getSingleOffer = async (req: Request, res: Response) => {
     const company = await Company.findById(offer?.companyId).select(
       "-email -password"
     );
-
     res.json({ offer, company });
   } catch (e) {
     res.status(500).json({ message: e });

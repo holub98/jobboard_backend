@@ -9,6 +9,7 @@ import "dotenv/config";
 
 const router = express.Router();
 
+
 export const myCompany = async (req: Request, res: Response) => {
   try {
     const company = await Company.findById(req.companyId);
@@ -39,14 +40,7 @@ export const register = async (req: Request, res: Response) => {
         expiresIn: "1d",
       }
     );
-
-    res.cookie("auth_token", token, {
-      domain:`https://jobboard-gabrielh.vercel.app`,
-      httpOnly: true,
-      secure: true,
-      maxAge: 86400000,
-    });
-    return res.status(200).send({ id: company.id, name: company.name });
+    return res.status(200).send({ name: company.name, expire: new Date().getTime()/1000+86400, token: token});
   } catch (error) {
     res.status(500).send({ message: error });
   }
@@ -114,9 +108,6 @@ export const deleteAccount = async (req: Request, res: Response) => {
     await JobOffer.deleteMany({ companyId: req.companyId });
 
     await Company.findByIdAndDelete(req.companyId);
-    res.cookie("auth_token", "", {
-      expires: new Date(0),
-    });
     res.send();
   } catch (e) {
     res.status(500).json({ message: e });

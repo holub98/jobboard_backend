@@ -1,7 +1,7 @@
 import { check, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
 import Company from "../models/company.js";
 import "dotenv/config";
 
@@ -43,15 +43,8 @@ export const login = async (req: Request, res: Response) => {
       }
     );
 
-    res.cookie("auth_token", token, {
-      domain:`https://jobboard-gabrielh.vercel.app`,
-      httpOnly: true,
-      secure: true,
-      maxAge: 86400000,
-    });
     res.status(200).json({
-      data: { id: company.id, name: company.name, expire: 86400000 },
-    });
+    name: company.name, expire: new Date().getTime()/1000+86400, token: token});
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -61,9 +54,4 @@ export const vaidation = (req: Request, res: Response) => {
   res.status(200).send({ companyId: req.companyId });
 };
 
-export const logout = (req: Request, res: Response) => {
-  res.cookie("auth_token", "", {
-    expires: new Date(0),
-  });
-  res.send();
-};
+export const logout = (req: Request, res: Response) => { res.send();};

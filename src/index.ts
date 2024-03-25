@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: `https://jobboard-gabrielh.vercel.app`,
+    origin: `${process.env.FRONTEND_URL}`,
     credentials: true,
   })
 );
@@ -28,11 +28,12 @@ app.use("/api/job-offer", offersRoutes);
 app.use("/api/candidates", candiateRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin",`https://jobboard-gabrielh.vercel.app` );
+  res.setHeader("Access-Control-Allow-Origin",`${process.env.FRONTEND_URL}` );
   res.setHeader("Access-Control-Allow-Credentials", 'true');
   res.send("Welcome to Express");
 });
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
+
 });
